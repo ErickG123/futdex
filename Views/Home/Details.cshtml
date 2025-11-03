@@ -1,0 +1,35 @@
+@model futdex.Models.Time
+
+@{
+    ViewData["Title"] = "Detalhes do Time";
+}
+
+<div class="mb-4">
+    <a asp-action="Index" class="btn btn-outline-secondary">&larr; Voltar para lista</a>
+</div>
+
+<div class="card mb-4">
+    <div class="row g-0">
+        <div class="col-md-4 d-flex align-items-center justify-content-center p-4">
+            @if (!string.IsNullOrWhiteSpace(Model.LogoUrl))
+            {
+                <img src="@Model.LogoUrl" alt="@Model.Nome logo" class="img-fluid" style="max-height:200px; object-fit:contain;" onerror="this.onerror=null;this.src='/images/no-logo.png';" />
+            }
+            else
+            {
+                <img src="/images/no-logo.png" alt="Sem logo" class="img-fluid" style="max-height:200px; object-fit:contain;" />
+            }
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h2 class="card-title">@Model.Nome</h2>
+                <p class="card-text mb-1"><strong>Campeonato:</strong> @Model.Campeonato?.Nome</p>
+                <p class="card-text mb-1"><strong>Cidade:</strong> @Model.Cidade ?? "-"</p>
+                <p class="card-text mb-1"><strong>Estado:</strong> @Model.Estado ?? "-"</p>
+                <p class="card-text mb-1"><strong>Estádio:</strong> @Model.Estadio ?? "-"</p>
+                <p class="card-text mb-1"><strong>Ano de Fundação:</strong> @(Model.AnoFundacao)</p>
+                <p class="card-text mb-1"><strong>Técnico:</strong> @Model.Tecnico ?? "-"</p>
+            </div>
+        </div>
+    </div>
+</div>
