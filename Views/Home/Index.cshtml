@@ -1,57 +1,185 @@
 ﻿@model IEnumerable<futdex.Models.Time>
 
 @{
-    ViewData["Title"] = "Times";
+    ViewData["Title"] = "Times do Campeonato Brasieliro";
 }
 
-<div class="text-center mb-4">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #e6e6e6;
+        overflow-x: hidden;
+    }
+
+    /* vídeo de fundo */
+    .video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(3px) brightness(0.9);
+        z-index: -2;
+    }
+
+    .image-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(3px) brightness(0.9);
+    }
+
+    /* camada translúcida sobre o vídeo */
+    .overlay {
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+
+    h1.display-4 {
+        font-size: 2.8rem;
+        font-weight: 600;
+        color: #f5f5f5;
+        text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: #f2f2f2;
+        margin-bottom: 2rem;
+    }
+
+    /* 🔳 Cards padrão */
+    .card {
+        background: transparent;
+        border: none;
+        border-radius: 14px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        transition: all 0.3s ease;
+        color: #f5f5f5;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    .alert-info {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #e0e0e0;
+        border: none;
+        backdrop-filter: blur(5px);
+    }
+
+    /* ⚽ Cards do carrossel (com logo + nome) */
+    .team-carousel .team-card {
+        width: 180px;
+        height: 160px;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 600;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 1rem 0.5rem;
+    }
+
+    .team-carousel .team-card img {
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+        margin-bottom: 0.5rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 4px;
+    }
+
+    .team-carousel .team-card h6 {
+        font-size: 1rem;
+        margin: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        color: #fff;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+   
+</style>
+
+<!-- 🎬 Vídeo de fundo -->
+<video autoplay muted loop class="video-background">
+    <source src="/videos/banner-chute.mp4" type="video/mp4">
+    Seu navegador não suporta vídeos HTML5.
+</video>
+
+<div class="overlay text-center mb-4">
     <h1 class="display-4">Times</h1>
     <p>Clique em um time para ver os detalhes.</p>
-</div>
 
-@if (!Model?.Any() ?? true)
-{
-    <div class="alert alert-info">Nenhum time encontrado.</div>
-}
-else
-{
-    <div class="row g-3">
-        @foreach (var team in Model)
-        {
-            <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-                <a asp-action="Details" asp-route-id="@team.Numero" class="text-decoration-none text-dark">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body d-flex flex-column align-items-center">
-                            <div style="height:90px; width:90px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
-                                @if (!string.IsNullOrWhiteSpace(team.LogoUrl))
-                                {
-                                    <img src="@team.LogoUrl"
-                                         alt="@team.Nome logo"
-                                         style="max-height:90px; max-width:90px; object-fit:contain;"
-                                         onerror="this.onerror=null;this.src='/images/no-logo.png';" />
-                                }
-                                else
-                                {
-                                    <img src="/images/no-logo.png" alt="Sem logo" style="max-height:90px; max-width:90px; object-fit:contain;" />
-                                }
-                            </div>
+    @if (!Model?.Any() ?? true)
+    {
+        <div class="alert alert-info mt-4">Nenhum time encontrado.</div>
+    }
+    else
+    {
+        <!-- Carrossel de times (logo + nome) -->
+        <div id="teamsCarousel" class="carousel slide mt-4 team-carousel" data-bs-ride="carousel">
+            <div class="carousel-inner">
 
-                            <h5 class="card-title text-center mb-1">@team.Nome</h5>
-
-                            <small class="text-muted text-center">
-                                @team.Cidade - @team.Estado
-                            </small>
-
-                            <div class="mt-auto w-100">
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <small class="text-muted">@team.Campeonato?.Nome</small>
-                                    <span class="badge bg-light text-dark">@team.AnoFundacao</span>
+                @{
+                    var teamsList = Model?.ToList() ?? new List<futdex.Models.Time>();
+                    var chunkSize = 4; // Quantos cards por slide
+                    for (int i = 0; i < teamsList.Count; i += chunkSize)
+                    {
+                        var chunk = teamsList.Skip(i).Take(chunkSize);
+                        var active = i == 0 ? "active" : "";
+                <div class="carousel-item @active">
+                    <div class="d-flex justify-content-center gap-3 flex-wrap py-3">
+                        @foreach (var team in chunk)
+                        {
+                            <a asp-action="Details" asp-route-id="@team.Numero" class="text-decoration-none">
+                                <div class="card team-card shadow-sm">
+                                    @if (!string.IsNullOrWhiteSpace(team.LogoUrl))
+                                    {
+                                        <img src="@team.LogoUrl"
+                                             alt="@team.Nome logo"
+                                             loading="lazy"
+                                             onerror="this.onerror=null;this.src='/images/no-logo.png';" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/images/no-logo.png"
+                                             alt="Sem logo"
+                                             loading="lazy" />
+                                    }
+                                    <h6 class="text-truncate">@team.Nome</h6>
                                 </div>
-                            </div>
-                        </div>
+                            </a>
+                        }
                     </div>
-                </a>
+                </div>
+                    }
+                }
             </div>
-        }
-    </div>
-}
+
+            <!-- controles do carrossel -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#teamsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#teamsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+    }
+</div>

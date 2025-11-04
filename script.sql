@@ -26,31 +26,32 @@ INSERT INTO CAMPEONATO (Nome) VALUES ("Brasileirão Série A");
 INSERT INTO TIME (Nome, Cidade, Estado, Estadio, AnoFundacao, Tecnico, LogoUrl, CampeonatoId)
 VALUES
 ("Palmeiras", "São Paulo", "SP", "Allianz Parque", 1914, "Abel Ferreira", 
- "https://upload.wikimedia.org/wikipedia/en/1/10/Palmeiras_logo.svg", 1),
+ "img/palmeiras-logo.png", 1),
 
 ("Flamengo", "Rio de Janeiro", "RJ", "Maracanã", 1895, "Tite", 
- "https://upload.wikimedia.org/wikipedia/en/2/2e/Flamengo_logo.svg", 1),
+ "img/logo-flamengo.png", 1),
 
 ("Grêmio", "Porto Alegre", "RS", "Arena do Grêmio", 1903, "Renato Gaúcho", 
- "https://upload.wikimedia.org/wikipedia/en/5/5c/Gremio_logo.svg", 1),
+ "img/logo-gremio.png", 1),
 
 ("Atlético Mineiro", "Belo Horizonte", "MG", "Arena MRV", 1908, "Gabriel Milito", 
- "https://upload.wikimedia.org/wikipedia/en/8/88/Clube_Atl%C3%A9tico_Mineiro_logo.svg", 1),
+ "img/clube-atletico-mineiro-logo.png", 1),
 
 ("São Paulo", "São Paulo", "SP", "Morumbi", 1930, "Luis Zubeldía", 
- "https://upload.wikimedia.org/wikipedia/en/1/10/Sao_Paulo_FC_logo.svg", 1),
+ "img/logo-sao-paulo.png", 1),
 
 ("Corinthians", "São Paulo", "SP", "Neo Química Arena", 1910, "Ramón Díaz", 
- "https://upload.wikimedia.org/wikipedia/en/5/5c/Corinthians_logo.svg", 1),
+ "img/logo-corinthians.png", 1),
 
 ("Internacional", "Porto Alegre", "RS", "Beira-Rio", 1909, "Eduardo Coudet", 
- "https://upload.wikimedia.org/wikipedia/en/2/2e/SC_Internacional_logo.svg", 1),
+ "img/logo-internacional.png", 1),
 
 ("Fluminense", "Rio de Janeiro", "RJ", "Maracanã", 1902, "Fernando Diniz", 
- "https://upload.wikimedia.org/wikipedia/en/3/3f/Fluminense_FC_logo.svg", 1),
+ "img/logo-fluminense.png", 1),
 
 ("Athletico Paranaense", "Curitiba", "PR", "Arena da Baixada", 1924, "Cuca", 
- "https://upload.wikimedia.org/wikipedia/en/4/4e/Club_Athletico_Paranaense_2019_logo.svg", 1),
+ "img/logo-atletico-paranaense.png", 1),
 
 ("Bahia", "Salvador", "BA", "Arena Fonte Nova", 1931, "Rogério Ceni", 
- "https://upload.wikimedia.org/wikipedia/en/7/7b/EC_Bahia_logo.svg", 1);
+ "img/logo-bahia.png", 1);
+\
